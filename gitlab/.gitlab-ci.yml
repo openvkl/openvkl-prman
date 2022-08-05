@@ -1,0 +1,405 @@
+## Copyright 2022 Intel Corporation
+## SPDX-License-Identifier: Apache-2.0
+
+variables:
+  KW_PROJECT_NAME: openvkl_prman
+
+stages:
+  - build
+  - run
+  - scan1
+  - scan2
+
+################################################################################
+# builds                                                                       #
+################################################################################
+
+# this build testing non-default CMake options
+build-test-options:
+  stage: build
+  tags:
+    - vis-perf-x8280-1
+  script:
+    - export CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" # for compat with CentOS 7 Open VKL builds
+    - gitlab/download_openvkl.sh devel build-centos7-icx-tbb2020
+    - gitlab/build.sh -D OPENVKL_ENABLE_STATS=ON
+  artifacts:
+    paths:
+      - openvkl
+      - build
+
+build-stream-16:
+  stage: build
+  tags:
+    - vis-perf-x8280-1
+  script:
+    - export CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" # for compat with CentOS 7 Open VKL builds
+    - gitlab/download_openvkl.sh devel build-centos7-icx-tbb2020
+    - gitlab/build.sh -D OPENVKL_DEVICE=cpu_16 -D ENABLE_SUBMODULE_PLUGINS=ON
+  artifacts:
+    paths:
+      - openvkl
+      - build
+
+build-stream-avx512_8:
+  stage: build
+  tags:
+    - vis-perf-x8280-1
+  script:
+    - export CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" # for compat with CentOS 7 Open VKL builds
+    - gitlab/download_openvkl.sh devel build-centos7-icx-tbb2020-avx512_8
+    - gitlab/build.sh -D OPENVKL_DEVICE=cpu_8 -D ENABLE_SUBMODULE_PLUGINS=ON
+  artifacts:
+    paths:
+      - openvkl
+      - build
+
+build-stream-8:
+  stage: build
+  tags:
+    - vis-perf-x8280-1
+  script:
+    - export CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" # for compat with CentOS 7 Open VKL builds
+    - gitlab/download_openvkl.sh devel build-centos7-icx-tbb2020
+    - gitlab/build.sh -D OPENVKL_DEVICE=cpu_8 -D ENABLE_SUBMODULE_PLUGINS=ON
+  artifacts:
+    paths:
+      - openvkl
+      - build
+
+build-stream-4:
+  stage: build
+  tags:
+    - vis-perf-x8280-1
+  script:
+    - export CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" # for compat with CentOS 7 Open VKL builds
+    - gitlab/download_openvkl.sh devel build-centos7-icx-tbb2020
+    - gitlab/build.sh -D OPENVKL_DEVICE=cpu_4 -D ENABLE_SUBMODULE_PLUGINS=ON
+  artifacts:
+    paths:
+      - openvkl
+      - build
+
+################################################################################
+# runs                                                                         #
+################################################################################
+
+# vis-perf-x8280-1 - sanity tests only
+
+sanity-stream-16:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-16
+  script:
+    - gitlab/run_one.sh smoke
+  artifacts:
+    paths:
+      - results/
+
+sanity-stream-avx512_8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-avx512_8
+  script:
+    - gitlab/run_one.sh smoke
+  artifacts:
+    paths:
+      - results/
+
+sanity-stream-8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-8
+  script:
+    - gitlab/run_one.sh smoke
+  artifacts:
+    paths:
+      - results/
+
+sanity-stream-4:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-4
+  script:
+    - gitlab/run_one.sh smoke
+  artifacts:
+    paths:
+      - results/
+
+# vis-perf-i9-12900k-1 - sanity runs
+
+sanity-i9-12900k-stream-8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-i9-12900k-1
+  needs:
+    - build-stream-8
+  script:
+    - gitlab/run_one.sh smoke
+  artifacts:
+    paths:
+      - results/
+
+# vis-perf-x8280-1
+
+x8280-stream-16:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-16
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+x8280-stream-avx512_8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-avx512_8
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+x8280-stream-8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-8
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+x8280-stream-4:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8280-1
+  needs:
+    - build-stream-4
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+# vis-perf-x8380-1
+
+x8380-stream-16:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8380-1
+  needs:
+    - build-stream-16
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+x8380-stream-avx512_8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8380-1
+  needs:
+    - build-stream-avx512_8
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+x8380-stream-8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8380-1
+  needs:
+    - build-stream-8
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+x8380-stream-4:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-x8380-1
+  needs:
+    - build-stream-4
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+# vis-perf-i9-12900k-1
+
+i9-12900k-stream-8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-i9-12900k-1
+  needs:
+    - build-stream-8
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+i9-12900k-stream-4:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-i9-12900k-1
+  needs:
+    - build-stream-4
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+# vis-perf-a-1
+
+a-1-stream-8:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-a-1
+  needs:
+    - build-stream-8
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+a-1-stream-4:
+  when: manual
+  stage: run
+  tags:
+    - vis-perf-a-1
+  needs:
+    - build-stream-4
+  script:
+    - gitlab/run_all.sh
+  artifacts:
+    paths:
+      - results/
+
+################################################################################
+# Klocwork                                                                     #
+################################################################################
+
+build-kw-scan:
+  stage: scan1
+  script:
+    - export CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" # for compat with CentOS 7 Open VKL builds
+    - gitlab/download_openvkl.sh devel build-centos7-icx-tbb2020
+    - gitlab/build-kw-scan.sh -D ENABLE_SUBMODULE_PLUGINS=OFF
+  tags:
+    - vis-perf-x8280-1 # needed for RenderMan dependency
+  artifacts:
+    paths:
+      - ./klocwork/*
+  needs: []
+
+check-kw-issues:
+  stage: scan2
+  image: $DOCKER_REGISTRY/ospray/docker-images:centos7
+  needs: [build-kw-scan]
+  script:
+    - gitlab/kw-check-issues.sh
+  tags:
+    - docker
+  allow_failure: true
+
+gen-kw-report:
+  stage: scan2
+  image: $DOCKER_REGISTRY/ospray/docker-images:centos7
+  needs: [build-kw-scan]
+  tags: [docker]
+  script:
+    - gitlab/kw-gen-report.sh
+    - gitlab/store-files.sh $CI_PROJECT_NAME $CI_PIPELINE_ID klocwork "klocwork/report.log"
+  artifacts:
+    paths:
+      - ./klocwork/*
+
+################################################################################
+# Protex                                                                       #
+################################################################################
+
+source-protex-scan:
+  stage: scan1
+  image: $DOCKER_REGISTRY/ospray/docker-images:centos7
+  script:
+    - gitlab/source-scan-protex.sh
+  tags:
+    - docker
+  needs: []
+  allow_failure: true
+
+################################################################################
+# BDBA                                                                         #
+################################################################################
+
+scan-bdba-bin:
+  stage: scan1
+  image: $DOCKER_REGISTRY/ospray/docker-images:centos7
+  tags: [docker]
+  needs: [build-stream-16]
+  script:
+    - tar -czvf prman-vkl.tgz build openvkl/build/install
+    - gitlab/bdba.sh "prman-vkl.tgz"
+    - gitlab/store-files.sh $CI_PROJECT_NAME $CI_PIPELINE_ID bdba "prman-vkl*.pdf"
+    - gitlab/store-files.sh $CI_PROJECT_NAME $CI_PIPELINE_ID bdba "prman-vkl*.csv"
+  artifacts:
+    paths:
+      - prman-vkl*.pdf
+      - prman-vkl*.csv
+
+################################################################################
+# AV                                                                           #
+################################################################################
+
+av:
+  stage: scan1
+  tags: [docker]
+  image: $DOCKER_REGISTRY/clamav:ubuntu20.04
+  needs: [build-stream-16]
+  script:
+    - tar -czvf prman-vkl.tgz build
+    - freshclam | tee -a /tmp/av_scan.log
+    - clamscan -va --max-filesize=1024M --max-scansize=1024M --alert-broken --alert-exceeds-max prman-vkl.tgz | tee -a /tmp/av_scan.log
+    - gitlab/store-files.sh $CI_PROJECT_NAME $CI_PIPELINE_ID av /tmp/av_scan.log

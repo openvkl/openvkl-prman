@@ -1,0 +1,77 @@
+##RenderMan RIB
+# RenderMan 23.1 build 2036321
+version 3.04999995
+Option "ribparse" "string varsubst" [""]
+Option "ribparse" "string varsubst" ["$"]
+Option "Ri" "float[4] CropWindow" [0 1 0 1] "float PixelVariance" [0.0149999997] "string PixelFilterName" ["gaussian"] "float[2] PixelFilterWidth" [1.5 1.5] "float FrameAspectRatio" [-1]
+  "int[2] FormatResolution" [1024 512] "float FormatPixelAspectRatio" [1] "float[4] ScreenWindow" [-2 2 -1 1]
+	"float[2] Shutter" [0 0.5]
+Option "bucket" "string order" ["spiral"] "int[2] orderorigin" [-1 -1]
+Option "curve" "float minwidth" [0]
+Option "dice" "float offscreenmultiplier" [1]
+Option "hider" "int incremental" [1] "string adaptivemetric" ["variance"] "float darkfalloff" [0.0250000004] "float[2] exposurebracket" [-1 1] "int decidither" [0] "int minsamples" [4] "int minextrasamples" [0] "int maxsamples" [64] "int adaptall" [0] "string type" ["raytrace"] "string pixelfiltermode" ["importance"] "int sampleoffset" [0] "int extrememotiondof" [0] "int samplemotion" [1]
+Option "lighting" "int selectionlearningscheme" [1]
+Option "limits" "int gridsize" [289] "int[2] bucketsize" [16 16] "int octreememory" [20480] "int pointmemory" [20480] "int threads" [0] "int texturememory" [2097150] "int ptexturememory" [32768] "int ptexturemaxfiles" [128] "int opacitycachememory" [1048580] "int matrixcachememory" [0] "int brickmemory" [2097150] "int geocachememory" [2097150] "float rendermemory" [0] "color othreshold" [0.996093988 0.996093988 0.996093988] "float deepshadowerror" [0.00999999978] "int nurbcurvaturedicefactor" [3]
+	"int proceduralbakingclumpsize" [0] "int shadesize" [289] "float textureperthreadmemoryratio" [0.5]
+Option "lpe" "string diffuse1" [""] "string diffuse2" ["Diffuse,HairDiffuse"] "string diffuse3" ["Subsurface"] "string diffuse4" [""] "string specular1" [""] "string specular2" ["Specular,HairSpecularR"] "string specular3" ["RoughSpecular,HairSpecularTRT"] "string specular4" ["Clearcoat"] "string specular5" ["Iridescence"] "string specular6" ["Fuzz,HairSpecularGLINTS"] "string specular7" ["SingleScatter,HairSpecularTT"] "string specular8" ["Glass"] "string user1" [""] "string user2" ["Albedo,DiffuseAlbedo,SubsurfaceAlbedo,HairAlbedo"] "string user3" ["Position"] "string user4" ["UserColor"] "string user5" [""] "string user6" ["Normal,DiffuseNormal,HairTangent,SubsurfaceNormal,SpecularNormal,RoughSpecularNormal,SingleScatterNormal,FuzzNormal,IridescenceNormal,GlassNormal"] "string user7" [""] "string user8" [""] "string user9" [""] "string user10" [""] "string user11" [""] "string user12" [""]
+Option "osl" "int batched" [1] "int statisticslevel" [5] "int verbose" [4]
+Option "ribparse" "string varsubst" [""]
+Option "searchpath" "string shader" ["@"] "string texture" ["@"] "string display" ["@"] "string archive" ["@"] "string procedural" ["@"] "string rixplugin" ["@"]
+Option "statistics" "int level" [1] "string filename" [""]
+  "string xmlfilename" ["wdas_cloud.xml"]
+  "string stylesheet" [""] "string shaderprofile" [""] "float[2] displace_ratios" [0.100000001 1] "int maxdispwarnings" [100] "int texturestatslevel" [0]
+Option "trace" "string worldorigin" ["worldoffset"] "float bvhcompression" [0] "float[3] worldoffset" [604.196838 35.852951 -467.985199]
+Integrator "PxrPathTracer" "/mat/pxrpathtracer1" "int maxIndirectBounces" [512] "int maxContinuationLength" [-1] "int maxNonStochasticOpacityEvents" [0] "string sampleMode" ["bxdf"] "int numLightSamples" [1] "int numBxdfSamples" [1] "int numIndirectSamples" [1] "int numDiffuseSamples" [1] "int numSpecularSamples" [1] "int numSubsurfaceSamples" [1] "int numRefractionSamples" [1] "int allowCaustics" [1] "int accumOpacity" [0] "int rouletteDepth" [10000000] "float rouletteThreshold" [0.100000001] "int clampDepth" [1000000000] "float clampLuminance" [100000]
+DisplayChannel "color Ci"
+DisplayChannel "float a"
+Projection "PxrPerspective" "float fStop" [9.99999968e+37] "float focalLength" [0] "float fov" [23.4018631] "float fovEnd" [0] "float focalDistance" [1]
+Transform [ -0.538014114 0.0379249007 -0.842082262 0  -1.51060522e-06 0.998987317 0.0449924096 -0  -0.842935801 -0.0242078267 0.537469268 -0  0 -0 -0 1 ]
+Camera "|/obj/cam1" "float nearClip" [30.8601933] "float farClip" [1310525.38]
+Display "wdas_cloud.exr" "it" "Ci,a" "string mode" ["Ci,a"] "string dspyParams" ["dspyIPR -port 41653 -crop 1 0 1 0"] "string camera" ["|/obj/cam1"]
+WorldBegin
+	AttributeBegin
+		Bxdf "PxrVolume" "/mat/pxrvolume1" "color diffuseColor" [1 1 1] "color emitColor" [0 0 0] "int __islight" [0] "int multiScatter" [1] "vector velocity" [0 0 0] "float velocityMultiplier" [1] "float extinctionDistance" [0]
+			"string densityFloatPrimVar" ["density"] "float densityFloat" [1] "string densityColorPrimVar" [""] "color densityColor" [1 1 1] "float maxDensity" [-1] "float anisotropy" [-0.550000012] "float anisotropy2" [0.839999974] "float blendFactor" [0.899999976] "float equiangularWeight" [0] "int minSamples" [4] "int maxSamples" [4] "float stepSize" [0.100000001]
+			"int multiScatterOpt" [0] "float extinctionMultiplier" [1] "float contributionMultiplier" [1] "int ri_trace_holdout" [0] "int ri_trace_maxdiffusedepth" [1024] "int ri_trace_maxspeculardepth" [1024] "float ri_shade_relativepixelvariance" [1] "string __materialid" ["/mat/pxrvolume1"]
+	AttributeEnd
+	ObjectBegin "5dbd0d5a-5fbe-11ea-bf17-0242a4f440a0"
+		Attribute "dice" "float minlength" [-1]
+		Attribute "identifier" "string object" ["volume"]
+		Volume "blobbydso:impl_openvdb.so"
+			[-221.666656 198.333328 -71.6666641 215 -301.666656 211.666656]
+			[0 0 0]
+			"constant string[2] blobbydso:stringargs" ["wdas_cloud.vdb" "density"]
+			"varying float density"
+			[]
+	ObjectEnd
+	AttributeBegin
+		Attribute "Ri" "int Matte" [0]
+		Attribute "grouping" "string membership" ["<<<node>>>_33 World"]
+		Attribute "identifier" "int id" [33] "string name" ["|/obj/volume|volume|volume"]
+		Attribute "lighting" "int mute" [0] "string subset" [""] "string excludesubset" [""]
+		Attribute "shade" "float relativepixelvariance" [1]
+		Attribute "trace" "int holdout" [0] "string reflectsubset" [""] "string reflectexcludesubset" [""] "string transmitsubset" [""] "string transmitexcludesubset" [""] "int maxdiffusedepth" [512] "int maxspeculardepth" [512]
+		Attribute "user" "string __materialid" ["/mat/pxrvolume1"]
+		Attribute "visibility" "int camera" [1] "int indirect" [1] "int transmission" [1]
+		Bxdf "PxrVolume" "/mat/pxrvolume1" "string __materialid" ["/mat/pxrvolume1"]
+		Transform [ 0.860706627 0 -0.509101272 0  0 1 0 0  0.509101272 0 0.860706627 0  -604.196838 -35.852951 467.985199 1 ]
+		ObjectInstance "5dbd0d5a-5fbe-11ea-bf17-0242a4f440a0"
+	AttributeEnd
+	ObjectBegin "5dbd10e8-5fbe-11ea-bf17-0242a4f440a0"
+		Transform [ -0 0 -1 0  1 0 -0 -0  -0 1 0 0  0 0 0 1 ]
+		Light "PxrEnvDayLight" "/obj/pxrenvdaylight1/matnet/pxrenvdaylight" "float intensity" [1] "float exposure" [0] "vector sunDirection" [-0 0 1] "float haziness" [1.79999995] "color skyTint" [1 1 1] "color sunTint" [1 1 1]
+			"float sunSize" [2] "int groundMode" [0] "color groundColor" [0.180000007 0.180000007 0.180000007] "int month" [6] "int day" [6] "int year" [2020] "float hour" [18] "float zone" [1] "float latitude" [49.0069008] "float longitude" [8.39999962] "float specular" [1] "float diffuse" [1]
+			"int enableShadows" [1] "color shadowColor" [0 0 0] "float shadowDistance" [-1] "float shadowFalloff" [-1] "float shadowFalloffGamma" [1] "string shadowSubset" [""] "string shadowExcludeSubset" [""] "int traceLightPaths" [1] "int thinShadow" [1] "int visibleInRefractionPath" [1] "int cheapCaustics" [0] "string cheapCausticsExcludeGroup" [""] "int fixedSampleCount" [0] "string lightGroup" [""] "float importanceMultiplier" [1]
+	ObjectEnd
+	AttributeBegin
+		Attribute "Ri" "int Matte" [0]
+		Attribute "grouping" "string membership" ["<<<node>>>_47 World"]
+		Attribute "identifier" "int id" [47] "string name" ["|/obj/pxrenvdaylight1"]
+		Attribute "lighting" "int mute" [0]
+		Attribute "trace" "int holdout" [0]
+		Attribute "user" "string __materialid" ["/obj/pxrenvdaylight1/matnet/pxrenvdaylight"]
+		Attribute "visibility" "int camera" [1] "int indirect" [1] "int transmission" [1]
+		Transform [ 0.615661502 0 -0.788010776 0  0 1 0 0  0.788010776 0 0.615661502 0  -604.196838 -35.852951 467.985199 1 ]
+		ObjectInstance "5dbd10e8-5fbe-11ea-bf17-0242a4f440a0"
+	AttributeEnd
+WorldEnd

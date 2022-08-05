@@ -1,0 +1,63 @@
+Option "ribparse" "string varsubst" [""]
+Option "ribparse" "string varsubst" ["$"]
+Option "searchpath" "string procedural" [".:${RMANTREE}/lib/plugins:@"]
+Attribute "trace" "int maxspeculardepth" [1]
+
+Format 512 768 1
+Hider "raytrace" "int incremental" [1] "int minsamples" [4] "int maxsamples" [128]
+
+# Change this to store the output in a file - the render will be displayed interactively the way I've set it up.
+Display "smoke.tif" "tiff" "rgba"
+#Display "openvdb" "framebuffer" "rgba"
+Quantize "rgba" 0 0 0 0
+Integrator "PxrPathTracer" "handle" "int numLightSamples" [4] "int numBxdfSamples" [4] "int maxIndirectBounces" [1]
+Projection "perspective" "fov" [30]
+FrameBegin 1
+        Shutter 0 1
+        Translate 0 0 150
+        ShadingRate 1
+        WorldBegin
+                Attribute "visibility" "int transmission" [1]
+                AttributeBegin
+                        Light "PxrMeshLight" "ColdLight"
+                        "float intensity" [60]
+                        "int enableTemperature" [1]
+                        "float temperature" [9000]
+                        Attribute "visibility" "int transmission" [0] "int indirect" [0] "int camera" [0]
+                        ShadingRate 1000
+                        Sides 1
+                        Scale 10 10 10
+                        Translate 0 5 0
+                        Patch "bilinear" "P" [-0.25 0.95 -0.25 0.25 0.95 -0.25 -0.25 0.95 0.25 0.25 0.95 0.25]
+                AttributeEnd
+                AttributeBegin
+                        Light "PxrMeshLight" "WarmLight"
+                        "float intensity" [60]
+                        "int enableTemperature" [1]
+                        "float temperature" [3000]
+                        Attribute "visibility" "int transmission" [0] "int indirect" [0] "int camera" [0]
+                        ShadingRate 1000
+                        Sides 1
+                        Scale 10 10 10
+                        Rotate 170 1 0 0
+                        Rotate 50 0 1 1
+                        Translate 0 5 5
+                        Patch "bilinear" "P" [-0.25 0.95 -0.25 0.25 0.95 -0.25 -0.25 0.95 0.25 0.25 0.95 0.25]
+                AttributeEnd
+                AttributeBegin
+                        Pattern "PxrPrimvar" "primvar" "string type" ["float"] "string varname" ["density"]
+                        Bxdf "PxrVolume" "smooth" "color diffuseColor" [0.9 0.9 0.9]
+                            "reference float densityFloat" ["primvar:resultF"]
+                            "float maxDensity" [10]
+                        Scale 1 1 1
+                        Translate 8 -45 0
+                        ShadingRate 5
+                        Volume "blobbydso:impl_openvdb.so"
+                               [-40 40 -3 100 -40 40]
+                               [0 0 0]
+                               "constant string[2] blobbydso:stringargs" ["smoke.vdb" "density"]
+                               "varying float density"
+                               []
+                AttributeEnd
+        WorldEnd
+FrameEnd
